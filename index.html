@@ -1,83 +1,379 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alexandre Devequi - Advogado</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Alexandre Devequi - Advocacia</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background: url('https://images.unsplash.com/photo-1588776814546-ec7d738a4b9b?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
+    /* Reset básico */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+    html {
+      scroll-behavior: smooth;
     }
 
-    .overlay {
-      background-color: rgba(0, 0, 0, 0.6);
-      min-height: 100vh;
+
+    body {
+      background-color: #fff;
+      color: #111;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* --- SPLASH SCREEN --- */
+    #splash {
+      position: fixed;
+      inset: 0; /* top:0; right:0; bottom:0; left:0 */
+      background-color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      max-width: 400px;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 1.8rem;
-      color: #2c3e50;
-      margin-bottom: 20px;
-    }
-
-    h2 {
-      font-size: 1.2rem;
-      color: #2c3e50;
-      margin-bottom: 10px;
+      z-index: 9999;
+      flex-direction: column;
+      user-select: none;
+      font-size: 2.5rem;
       font-weight: 700;
+      color: #000;
+      overflow: hidden;
     }
 
-    p {
-      font-size: 1rem;
-      margin-bottom: 30px;
+    /* Efeito máquina de escrever */
+    #splash-text {
+      border-right: 3px solid black;
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 3s steps(20) forwards, blink 0.7s step-end infinite alternate;
     }
 
-    .botao {
-      display: inline-block;
-      background-color: #25d366;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
+    @keyframes typing {
+      from { width: 0 }
+      to { width: 17ch; } /* "Alexandre Devequi" tem 17 caracteres */
+    }
+
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+
+    /* --- ESCONDER SPLASH E MOSTRAR SITE --- */
+    body.loading #splash {
+      display: flex;
+    }
+    body.loading main,
+    body.loading header,
+    body.loading footer {
+      display: none;
+    }
+
+    body.loaded #splash {
+      animation: fadeOut 1s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    /* --- SITE --- */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 60px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 30px;
+      z-index: 1000;
+    }
+    header h1 {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #222;
+      cursor: default;
+      user-select: none;
+    }
+    nav a {
       text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      transition: background-color 0.3s;
+      color: #666;
+      margin-left: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    nav a:hover {
+      color: #000;
+    }
+    main {
+      padding-top: 80px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    section {
+      padding: 60px 20px;
+      border-bottom: 1px solid #eee;
+    }
+    #home {
+      text-align: center;
+      padding-top: 140px;
+      padding-bottom: 140px;
+      background: #f5f5f5;
+      overflow: hidden;
+    }
+    #home h2, #home p {
+      opacity: 0;
+      transform: translateY(30px);
+      animation-fill-mode: forwards;
+      animation-timing-function: cubic-bezier(0.5, 0, 0, 1);
+    }
+    #home h2 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 15px;
+      animation-name: fadeSlideUp;
+      animation-duration: 1s;
+      animation-delay: 0.3s;
+    }
+    #home p {
+      font-size: 1.1rem;
+      color: #444;
+      max-width: 450px;
+      margin: 0 auto;
+      line-height: 1.5;
+      animation-name: fadeSlideUp;
+      animation-duration: 1s;
+      animation-delay: 0.9s;
     }
 
-    .botao:hover {
-      background-color: #1ebd5a;
+    @keyframes fadeSlideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #sobre h2, #servicos h2, #contato h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #222;
+      border-left: 4px solid #000;
+      padding-left: 10px;
+    }
+    #sobre p, #servicos p {
+      font-size: 1rem;
+      color: #555;
+      max-width: 700px;
+      margin-bottom: 15px;
+      line-height: 1.6;
+    }
+    #servicos ul {
+      list-style: none;
+      max-width: 700px;
+      margin-top: 20px;
+    }
+    #servicos li {
+      font-size: 1rem;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+      font-weight: 600;
+      color: #333;
+      cursor: default;
+      user-select: none;
+    }
+    #contato form {
+      max-width: 500px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    #contato label {
+      margin-bottom: 5px;
+      font-weight: 600;
+      color: #222;
+    }
+    #contato input, #contato textarea {
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-family: inherit;
+      resize: vertical;
+    }
+    #contato button {
+      padding: 12px;
+      background: #000;
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    #contato button:hover {
+      background: #444;
+    }
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      font-size: 0.9rem;
+      color: #999;
+    }
+    @media (max-width: 600px) {
+      nav a {
+        margin-left: 15px;
+        font-size: 0.85rem;
+      }
+      #home h2 {
+        font-size: 2rem;
+      }
+      main {
+        padding: 20px;
+      }
+      section {
+        padding: 40px 10px;
+      }
     }
   </style>
 </head>
-<body>
-  <div class="overlay">
-    <div class="container">
-      <h1>Alexandre Devequi - Advogado</h1>
-      <h2>Precisa de ajuda com assuntos jurídicos?</h2>
-      <p>Clique no botão abaixo para conversar com a nossa equipe pelo WhatsApp. Estamos prontos para te orientar com segurança!</p>
-      <a class="botao" href="https://wa.me/5543996324249?text=Ol%C3%A1%2C+gostaria+de+orienta%C3%A7%C3%A3o+jur%C3%ADdica" target="_blank" rel="noopener noreferrer">
-        Falar com a equipe
-      </a>
-    </div>
+<body class="loading">
+  <!-- SPLASH SCREEN -->
+  <div id="splash">
+    <div id="splash-text">Alexandre Devequi</div>
   </div>
+
+  <!-- SITE -->
+  <header>
+    <h1>Alexandre Devequi</h1>
+    <nav>
+      <a href="#home">Início</a>
+      <a href="#sobre">Sobre</a>
+      <a href="#servicos">Serviços</a>
+      <a href="#contato">Contato</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home">
+      <h2>Excelência em Advocacia</h2>
+      <p>Comprometido com a defesa dos seus direitos, Alexandre Devequi oferece atendimento personalizado nas principais áreas do Direito.</p>
+    </section>
+
+    <section id="sobre">
+      <h2>Sobre o Escritório</h2>
+      <p>Fundado por Alexandre Devequi, o escritório tem como missão proporcionar soluções jurídicas eficazes com ética e transparência.</p>
+      <p>Nosso compromisso é garantir justiça e segurança jurídica para cada caso que assumimos.</p>
+    </section>
+
+    <section id="servicos">
+      <h2>Áreas de Atuação Previdenciária</h2>
+      <ul>
+        <li>Aposentadoria por Tempo de Contribuição</li>
+<li>Aposentadoria por Idade</li>
+<li>Aposentadoria Especial</li>
+<li>Auxílio-Doença</li>
+<li>Auxílio-Acidente</li>
+<li>Pensão por Morte</li>
+<li>Revisão de Benefícios Previdenciários</li>
+<li>Benefício de Prestação Continuada (BPC)</li>
+<li>Auxílio-Reclusão</li>
+<li>Concessão e Manutenção de Benefícios</li>
+      </ul>
+    </section>
+
+<section id="contato">
+  <h2>Localização</h2>
+  <p style="margin-bottom: 20px;">
+    Nosso escritório está localizado no Edifício Morada do Sol, na Av. Minas Gerais, 175 - Cornélio Procópio, PR.
+  </p>
+  <div style="
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  ">
+    <iframe 
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3669.5052518041265!2d-50.65124912486577!3d-23.180740848228913!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94eadf3d543ae6fd%3A0x9726daeb2d2733e6!2sEdificio%20Morada%20do%20Sol!5e0!3m2!1spt-BR!2sbr!4v1717341712706!5m2!1spt-BR!2sbr" 
+      width="100%" 
+      height="100%" 
+      style="border:0;" 
+      allowfullscreen="" 
+      loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</section>
+
+  </main>
+
+  <footer>
+    ©Alexandre Devequi. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Após a animação do typing terminar, esperar 1s e esconder splash
+    const splash = document.getElementById('splash');
+    const body = document.body;
+
+    // Duração do typing é 5s, esperar + 1s para sumir a splash
+    setTimeout(() => {
+      // Muda classe para fazer fade out e mostrar site
+      body.classList.remove('loading');
+      body.classList.add('loaded');
+
+      // Depois de 1s remover splash do DOM (opcional)
+      setTimeout(() => {
+        splash.style.display = 'none';
+      }, 1000);
+    }, 4000);
+  </script>
+
+<a href="https://wa.me/5543996324249?text=Olá!%20Gostaria%20de%20mais%20informações." 
+   class="whatsapp-float" 
+   target="_blank" 
+   aria-label="Converse pelo WhatsApp">
+  <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" 
+       alt="WhatsApp" />
+</a>
+
+<style>
+  .whatsapp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    border-radius: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: transform 0.2s ease;
+  }
+
+  .whatsapp-float:hover {
+    transform: scale(1.1);
+  }
+
+  .whatsapp-float img {
+    width: 30px;
+    height: 30px;
+    filter: invert(1);
+  }
+</style>
+
 </body>
 </html>
