@@ -222,11 +222,42 @@
     #contato button:hover {
       background: #444;
     }
-    footer {
-      text-align: center;
-      padding: 30px 15px;
-      font-size: 0.9rem;
-      color: #999;
+
+    /* WhatsApp flutuante */
+    .whatsapp-float {
+  text-decoration: none !important;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25d366;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 50px;
+      font-size: 18px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .whatsapp-float img {
+      width: 24px;
+      margin-right: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+      }
+
+      ul li {
+        font-size: 16px;
+      }
+
+      .whatsapp-float {
+        font-size: 16px;
+        padding: 10px 14px;
+      }
     }
     @media (max-width: 600px) {
       nav a {
@@ -293,12 +324,10 @@
 <section id="contato">
   <h2>Localização</h2>
 
- <p style="margin-bottom: 20px;">
-    <strong>Telefone / WhatsApp:</strong>
-    <a href="https://wa.me/5543996324249" target="_blank" style="color: #007bff; text-decoration: none;">
-      +55 (43) 99632-4249
-    </a>
-  </p>
+ <a class="whatsapp-float" href="https://wa.me/5543996324249" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    Fale conosco
+  </a>
 
   <p style="margin-bottom: 20px;">
     Nosso escritório está localizado no Edifício Morada do Sol, na Av. Minas Gerais, 175 - Cornélio Procópio, PR.
